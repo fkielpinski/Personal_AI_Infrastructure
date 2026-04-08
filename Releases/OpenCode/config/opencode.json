@@ -1,21 +1,4 @@
 {
-  // OPAI — Open Personal AI Infrastructure
-  // opencode configuration file
-  // Schema: https://opencode.ai/config.json
   "$schema": "https://opencode.ai/config.json",
-
-  // Load PAI system prompt and personal context at startup
-  "instructions": [
-    "SYSTEM.md",
-    "AGENTS.md"
-  ],
-
-  // Default theme
-  "theme": "dark",
-
-  // Enable skill commands (e.g. /research, /thinking)
-  "autoshare": false,
-
-  // Compaction settings — keeps context clean on long sessions
   "autoupdate": true
 }
