@@ -25,9 +25,8 @@ Releases/OpenCode/
 ├── INSTALL.md
 ├── install.sh                  # One-command setup
 ├── config/
-│   ├── opencode.json           # opencode config — loads PAI instructions
-│   ├── SYSTEM.md               # PAI identity + 7-phase Algorithm
-│   └── AGENTS.md               # Your personal context + voice config
+│   ├── opencode.json           # opencode runtime config
+│   └── AGENTS.md               # PAI identity + Algorithm + your personal context
 ├── skills/                     # 9 PAI skill categories
 │   ├── research.md             # Multi-mode research methodology
 │   ├── thinking.md             # First principles, red team, council
@@ -51,7 +50,7 @@ opai              # Launch PAI on opencode
 opai --help       # opencode help
 ```
 
-`opai` sets `OPENCODE_CONFIG_DIR=~/.config/opai` and launches opencode. Your PAI config stays isolated from any other opencode projects you work on.
+`opai` sets `XDG_CONFIG_HOME=~/.config/opai` and launches opencode. This redirects opencode's global config to `~/.config/opai/opencode/`, keeping your PAI setup fully isolated from any other opencode projects.
 
 ## Quick Start
 
@@ -63,7 +62,7 @@ npm install -g opencode-ai
 bash install.sh
 
 # 3. Customize your identity
-edit ~/.config/opai/SYSTEM.md    # Replace {{YOUR_NAME}} and {{YOUR_AI_NAME}}
+edit ~/.config/opai/opencode/AGENTS.md   # Replace {{YOUR_NAME}} and {{YOUR_AI_NAME}}
 
 # 4. Connect a model
 opencode auth login              # ChatGPT Plus/Pro subscription
@@ -96,26 +95,27 @@ This methodology is the scaffold. It makes a $20/mo ChatGPT subscription surpris
 ## Architecture
 
 ```
-┌─────────────────────────────────────┐
-│         opai command                │
-│  (OPENCODE_CONFIG_DIR=~/.config/opai│
-│   exec opencode)                    │
-├─────────────────────────────────────┤
-│       opencode agent runtime        │
-│  (multi-provider, subscription-auth)│
-├─────────────────────────────────────┤
-│  SYSTEM.md + AGENTS.md (via         │
-│  instructions[] in opencode.json)   │
-├──────────────┬──────────────────────┤
-│  Skills (9)  │  Memory             │
-│  ~/.config/  │  learning/state/work│
-│  opai/skills/│                     │
-├──────────────┴──────────────────────┤
-│       Your Model Provider           │
-│  ChatGPT Plus/Pro  │  OpenAI API    │
-│  Anthropic API     │  Ollama (local)│
-│  OpenRouter        │  Any compatible│
-└─────────────────────────────────────┘
+┌──────────────────────────────────────────┐
+│  opai command                            │
+│  XDG_CONFIG_HOME=$HOME/.config/opai      │
+│  exec opencode                           │
+├──────────────────────────────────────────┤
+│  opencode agent runtime                  │
+│  (multi-provider, subscription-auth)     │
+├──────────────────────────────────────────┤
+│  ~/.config/opai/opencode/AGENTS.md       │
+│  (PAI identity + Algorithm + your rules) │
+│  auto-loaded as global instructions      │
+├───────────────────┬──────────────────────┤
+│  Skills (9)       │  Memory              │
+│  ~/.config/opai/  │  learning/           │
+│  opencode/skills/ │  state/ / work/      │
+├───────────────────┴──────────────────────┤
+│  Your Model Provider                     │
+│  ChatGPT Plus/Pro  │  OpenAI API         │
+│  Anthropic API     │  Ollama (local)     │
+│  OpenRouter        │  Any compatible     │
+└──────────────────────────────────────────┘
 ```
 
 ## Relationship to Other PAI Releases
