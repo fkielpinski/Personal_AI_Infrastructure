@@ -34,6 +34,7 @@ mkdir -p "$OPAI_CONFIG/memory/learning"
 mkdir -p "$OPAI_CONFIG/memory/state"
 mkdir -p "$OPAI_CONFIG/memory/work"
 mkdir -p "$OPAI_CONFIG/skills"
+mkdir -p "$OPAI_CONFIG/agents"
 echo "✓ Directories created"
 
 # ── 3. Copy config files ─────────────────────────────────────
@@ -43,11 +44,17 @@ cp "$SCRIPT_DIR/config/opencode.json" "$OPAI_CONFIG/opencode.json"
 cp "$SCRIPT_DIR/config/AGENTS.md"     "$OPAI_CONFIG/AGENTS.md"
 echo "✓ Config files installed"
 
-# ── 4. Copy skills ────────────────────────────────────────────
+# ── 4. Copy skills (each skill is a subdirectory with SKILL.md) ──
 echo ""
 echo "Copying PAI skills ..."
-cp "$SCRIPT_DIR/skills/"*.md "$OPAI_CONFIG/skills/"
-echo "✓ Skills installed ($(ls "$OPAI_CONFIG/skills/" | wc -l | tr -d ' ') skill files)"
+cp -r "$SCRIPT_DIR/skills/"*/ "$OPAI_CONFIG/skills/"
+echo "✓ Skills installed ($(ls "$OPAI_CONFIG/skills/" | wc -l | tr -d ' ') skill directories)"
+
+# ── 4b. Copy agent definitions ────────────────────────────────
+echo ""
+echo "Copying PAI agents ..."
+cp "$SCRIPT_DIR/agents/"*.md "$OPAI_CONFIG/agents/"
+echo "✓ Agents installed ($(ls "$OPAI_CONFIG/agents/" | wc -l | tr -d ' ') agents)"
 
 # ── 5. Create opai command ────────────────────────────────────
 # opai sets XDG_CONFIG_HOME so opencode reads its global config

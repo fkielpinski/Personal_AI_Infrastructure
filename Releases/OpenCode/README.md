@@ -14,7 +14,7 @@ The `opai` command launches opencode with your PAI configuration isolated from o
 | ChatGPT subscription | No | **Yes — `opencode auth login`** |
 | Local models | No | Yes (Ollama, LM Studio, etc.) |
 | Cost | Subscription required | Free tool + your chosen provider |
-| PAI methodology | Full (63+ skills, 21 hooks) | Core (9 skills, config-driven) |
+| PAI methodology | Full (63+ skills, 21 hooks) | Core (9 skills + 3 subagents) |
 | Open source | Yes | Yes |
 
 ## What's Included
@@ -27,16 +27,20 @@ Releases/OpenCode/
 ├── config/
 │   ├── opencode.json           # opencode runtime config
 │   └── AGENTS.md               # PAI identity + Algorithm + your personal context
-├── skills/                     # 9 PAI skill categories
-│   ├── research.md             # Multi-mode research methodology
-│   ├── thinking.md             # First principles, red team, council
-│   ├── agents.md               # Compose and coordinate AI agents
-│   ├── investigation.md        # OSINT and structured investigation
-│   ├── security.md             # Security assessment and code review
-│   ├── telos.md                # Life OS — goals, projects, wisdom
-│   ├── content-analysis.md     # Extract insights from any content
-│   ├── media.md                # Diagrams, visuals, image prompts
-│   └── scraping.md             # Web scraping and data extraction
+├── agents/                     # 3 specialist subagents (opencode agent format)
+│   ├── researcher.md           # Web research + source synthesis
+│   ├── thinker.md              # First principles, red team, premortem
+│   └── coder.md                # Implementation, debugging, code review
+├── skills/                     # 9 PAI skills (opencode skill format)
+│   ├── research/SKILL.md       # Multi-mode research methodology
+│   ├── thinking/SKILL.md       # Analytical thinking modes
+│   ├── agents/SKILL.md         # Agent composition and coordination
+│   ├── investigation/SKILL.md  # OSINT and structured investigation
+│   ├── security/SKILL.md       # Security assessment and code review
+│   ├── telos/SKILL.md          # Life OS — goals, projects, wisdom
+│   ├── content-analysis/SKILL.md # Extract insights from any content
+│   ├── media/SKILL.md          # Diagrams, visuals, image prompts
+│   └── scraping/SKILL.md       # Web scraping and data extraction
 └── memory/
     ├── learning/               # Session logs and improvement signals
     ├── state/                  # Current work state
@@ -106,10 +110,11 @@ This methodology is the scaffold. It makes a $20/mo ChatGPT subscription surpris
 │  ~/.config/opai/opencode/AGENTS.md       │
 │  (PAI identity + Algorithm + your rules) │
 │  auto-loaded as global instructions      │
-├───────────────────┬──────────────────────┤
-│  Skills (9)       │  Memory              │
-│  ~/.config/opai/  │  learning/           │
-│  opencode/skills/ │  state/ / work/      │
+├──────────────┬────────────┬─────────────┤
+│  Skills (9)  │ Agents (3) │  Memory     │
+│  invoked via │ @researcher│ learning/   │
+│  skill() tool│ @thinker   │ state/work/ │
+│              │ @coder     │             │
 ├───────────────────┴──────────────────────┤
 │  Your Model Provider                     │
 │  ChatGPT Plus/Pro  │  OpenAI API         │
