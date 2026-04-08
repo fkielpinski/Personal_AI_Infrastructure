@@ -14,7 +14,7 @@ The `opai` command launches opencode with your PAI configuration isolated from o
 | ChatGPT subscription | No | **Yes — `opencode auth login`** |
 | Local models | No | Yes (Ollama, LM Studio, etc.) |
 | Cost | Subscription required | Free tool + your chosen provider |
-| PAI methodology | Full (63+ skills, 21 hooks) | Core (9 skills + 3 subagents) |
+| PAI methodology | Full (63+ skills, 21 hooks) | Deep (9 skills × multi-workflow + 3 subagents) |
 | Open source | Yes | Yes |
 
 ## What's Included
@@ -134,6 +134,60 @@ This scaffold derives from and is compatible with the PAI methodology across all
 The Algorithm, memory structure, and skill format are compatible across all releases. Your `memory/` directory transfers between them.
 
 **To upgrade to full PAI:** Install [PAI v4.0.3](../v4.0.3/) on Claude Code. Your memory and workflow patterns transfer directly.
+
+## Updating OPAI
+
+When a new version of OPAI is released, update your local installation without losing your customizations.
+
+### What's preserved vs. overwritten
+
+| File/Directory | On Update |
+|----------------|-----------|
+| `AGENTS.md` | **Preserved** — your identity customizations stay |
+| `opencode.json` | **Overwritten** — re-apply any custom settings after |
+| `skills/*/SKILL.md` | **Overwritten** — gets new workflow improvements |
+| `agents/*.md` | **Overwritten** — gets new agent definitions |
+| `memory/` | **Never touched** — your session logs and state are safe |
+
+### Update procedure
+
+```bash
+# 1. Pull the latest version of the PAI repository
+cd /path/to/Personal_AI_Infrastructure
+git pull
+
+# 2. Re-run the installer — it overwrites skills/agents/config, preserves memory
+cd Releases/OpenCode
+bash install.sh
+
+# 3. Check if your AGENTS.md customizations survived
+# (install.sh skips AGENTS.md if it already exists — your identity is safe)
+cat ~/.config/opai/opencode/AGENTS.md | grep -A2 "Your Name\|YOUR_NAME"
+
+# 4. Re-apply any opencode.json settings if you had customized it
+# (the default config is minimal — most users won't need to do anything here)
+```
+
+### Manual skill update only
+
+If you only want to update skills without reinstalling everything:
+
+```bash
+# Update skills from a cloned PAI repo
+cp -r Releases/OpenCode/skills/*/ ~/.config/opai/opencode/skills/
+
+# Update agents
+cp Releases/OpenCode/agents/*.md ~/.config/opai/opencode/agents/
+```
+
+### Check your installed version
+
+```bash
+# View version of any installed skill
+head -10 ~/.config/opai/opencode/skills/research/SKILL.md
+```
+
+---
 
 ## Contributing
 

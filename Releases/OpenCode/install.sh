@@ -41,7 +41,14 @@ echo "✓ Directories created"
 echo ""
 echo "Copying PAI config files ..."
 cp "$SCRIPT_DIR/config/opencode.json" "$OPAI_CONFIG/opencode.json"
-cp "$SCRIPT_DIR/config/AGENTS.md"     "$OPAI_CONFIG/AGENTS.md"
+
+# AGENTS.md contains your identity customization — only install if not already present
+if [ ! -f "$OPAI_CONFIG/AGENTS.md" ]; then
+  cp "$SCRIPT_DIR/config/AGENTS.md" "$OPAI_CONFIG/AGENTS.md"
+  echo "✓ AGENTS.md installed (customize: replace {{YOUR_NAME}} and {{YOUR_AI_NAME}})"
+else
+  echo "✓ AGENTS.md preserved (your customizations kept — not overwritten)"
+fi
 echo "✓ Config files installed"
 
 # ── 4. Copy skills (each skill is a subdirectory with SKILL.md) ──
